@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Redirect,
+  // Link
+} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {QrReader} from "react-qr-reader";
 
-function App() {
+
+import './App.css';
+import React, { useEffect, useState } from 'react';
+import QRscan from './pages/QrScanner'
+
+const App = (props) => {
+  const [data, setData] = useState('No result');
+  const handleScan = data =>{
+    if (data){
+
+      <Route>
+        <Redirect to={{pathname: setData}}/>
+      </Route>
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <QrReader
+        onResult={(result, error) => {
+          if (!!result) {
+            setData(result?.text);
+          }
+
+          if (!!error) {
+            console.info(error);
+          }
+        }}
+        style={{ width: '100%' }}
+      />
+      <p>{data}</p>
+    </>
   );
-}
+};
 
 export default App;
